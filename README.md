@@ -14,7 +14,7 @@ npm install
 ## Usage
 To run the script:
 ```bash
-node index.js
+npm start
 ```
 
 This will open a Chrome browser and navigate to the specified Zoom meeting URL.

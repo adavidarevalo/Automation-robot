@@ -1,71 +1,103 @@
 const puppeteer = require('puppeteer');
 
-async function openZoomMeeting() {
+// Configuration
+const CONFIG = {
+  browserOptions: {
+    headless: true,
+    args: ["--start-maximized", "--no-sandbox", "--disable-setuid-sandbox"]
+  },
+  viewport: { width: 1366, height: 768 },
+  zoomUrl: "https://byupathway.zoom.us/j/8013624576?pwd=MGZ5SnQ1b2RzVFZUS3lFNDlnbnhHUT09#success",
+  userName: "David Arevalo"
+};
+
+// Selectors
+const SELECTORS = {
+  joinFromBrowser: 'a[role="button"][web_client=""]',
+  continueWithoutDevices: 'div[role="button"].continue-without-mic-camera',
+  nameInput: '#input-for-name',
+  joinButton: 'button.preview-join-button'
+};
+
+async function initializeBrowser() {
+  console.log("Launching browser...");
+  const browser = await puppeteer.launch(CONFIG.browserOptions);
+  const page = await browser.newPage();
+  await page.setViewport(CONFIG.viewport);
+  return { browser, page };
+}
+
+async function navigateToZoom(page) {
+  console.log("Navigating to Zoom URL...");
+  await page.goto(CONFIG.zoomUrl);
+  await page.waitForSelector(SELECTORS.joinFromBrowser, { timeout: 15000 });
+  await page.click(SELECTORS.joinFromBrowser);
+  await new Promise(resolve => setTimeout(resolve, 2000));
+}
+
+async function handleDevicePermissions(frame) {
+  console.log("Handling device permissions...");
+  try {
+    await frame.waitForSelector(SELECTORS.continueWithoutDevices);
+    await frame.click(SELECTORS.continueWithoutDevices);
+    console.log("Clicked continue without mic/camera button");
+
+    // Second attempt after delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
     try {
-      console.log("Launching browser...");
-      // Launch the browser
-      const browser = await puppeteer.launch({
-        headless: false, // Set to false to see the browser in action
-        args: ["--start-maximized", "--no-sandbox", "--disable-setuid-sandbox"],
-      });
-
-      console.log("Creating new page...");
-      // Create a new page
-      const page = await browser.newPage();
-
-      console.log("Setting viewport...");
-      // Set viewport to a decent size
-      await page.setViewport({ width: 1366, height: 768 });
-
-      console.log("Navigating to Zoom URL...");
-      // Navigate to the Zoom URL
-      await page.goto(
-        "https://byupathway.zoom.us/j/8013624576?pwd=MGZ5SnQ1b2RzVFZUS3lFNDlnbnhHUT09#success"
-      );
-
-      console.log("Waiting for Join from browser button...");
-      // Wait for the 'Join from your browser' link to appear and click it
-      await page.waitForSelector('a[role="button"][web_client=""]', {
-        timeout: 15000,
-      });
-      await page.click('a[role="button"][web_client=""]');
-
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Get iframe content
-      const frames = await page.frames();
-
-      // Find and click the continue without mic/camera button
-      console.log("Looking for continue without mic/camera button...");
-      const frame = frames[1];
-
-      console.log("frame ", frame);
-
-      if (frame) {
-        await frame.waitForSelector(
-          'div[role="button"].continue-without-mic-camera'
-        );
-        await frame.click('div[role="button"].continue-without-mic-camera');
-        console.log("Clicked continue without mic/camera button");
-
-        // Wait 10 seconds and try to click again
-        console.log("Waiting 10 seconds to click again...");
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        try {
-          await frame.click('div[role="button"].continue-without-mic-camera');
-          console.log("Clicked continue button again after 10 seconds");
-        } catch (err) {
-          console.log(
-            "Button not found after 10 seconds, may have already been handled"
-          );
-        }
-      } else {
-        console.log("Could not find the Zoom frame");
-      }
-    } catch (error) {
-        console.error('An error occurred:', error);
+      await frame.click(SELECTORS.continueWithoutDevices);
+      console.log("Clicked continue button again after delay");
+    } catch {
+      console.log("Second button click not needed");
     }
+  } catch (error) {
+    throw new Error(`Failed to handle device permissions: ${error.message}`);
+  }
+}
+
+async function joinMeeting(frame) {
+  try {
+    await frame.type(SELECTORS.nameInput, CONFIG.userName);
+    console.log("Typed name into input field");
+
+    await frame.click(SELECTORS.joinButton);
+    console.log("Clicked Join button");
+  } catch (error) {
+    throw new Error(`Failed to join meeting: ${error.message}`);
+  }
+}
+
+async function openZoomMeeting() {
+  let browser;
+  try {
+    // Initialize browser and page
+    const { browser: b, page } = await initializeBrowser();
+    browser = b;
+
+    // Navigate to Zoom
+    await navigateToZoom(page);
+
+    // Get the Zoom meeting frame
+    const frames = await page.frames();
+    const zoomFrame = frames[1];
+
+    if (!zoomFrame) {
+      throw new Error("Could not find the Zoom frame");
+    }
+
+    // Handle meeting join flow
+    await handleDevicePermissions(zoomFrame);
+    await joinMeeting(zoomFrame);
+
+  } catch (error) {
+    console.error('An error occurred:', error.message);
+  } finally {
+    // Ensure browser cleanup
+    if (browser) {
+      // Uncomment the following line if you want the browser to close automatically
+      // await browser.close();
+    }
+  }
 }
 
 openZoomMeeting();

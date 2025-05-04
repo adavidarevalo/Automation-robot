@@ -20,11 +20,6 @@ apt-get install -y git
 apt-get install -y nodejs
 apt-get install -y npm
 
-# Verify installations
-echo "Node.js version: $(node -v)"
-echo "npm version: $(npm -v)"
-echo "Git version: $(git --version)"
-
 # Create application directory
 APP_DIR="/home/ubuntu/automation-robot"
 echo "Creating application directory at $APP_DIR"
@@ -68,9 +63,24 @@ sudo apt install -y \
   libvulkan1 \
   xdg-utils
 
-apt-get install -y tmux
+# webcam
+sudo apt install -y v4l2loopback-dkms v4l2loopback-utils ffmpeg  
 
-tmux new-session -d -s automation "sudo bash -c 'cd $APP_DIR/scripts/webcam && ./index.sh'"
-tmux split-window -v -t automation "sudo bash -c 'cd $APP_DIR && npm start'"
-tmux select-layout -t automation even-vertical
-tmux attach -t automation
+sudo modprobe -r v4l2loopback
+sudo modprobe v4l2loopback video_nr=2 card_label="FakeCam" exclusive_caps=1
+
+sudo modprobe v4l2loopback \
+  exclusive_caps=1 \
+  max_width=1920 max_height=1080 \
+  video_nr=2 \
+  card_label="FakeCam"  
+
+# Get the directory where the script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+ffmpeg -re -stream_loop -1 -i "$APP_DIR/public/video.mp4" \
+  -vcodec rawvideo -pix_fmt yuv420p \
+  -f v4l2 /dev/video2 > /dev/null 2>&1 &
+
+
+npm run startpublic/video.mp4

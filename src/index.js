@@ -47,7 +47,15 @@ class ZoomAutomation {
   }
 
   async switchToFakeCam() {
-    logStep('Switching to FakeCam...');
+    logStep("Switching to FakeCam...");
+
+    // Take a screenshot after switching to FakeCam
+    logStep("Taking screenshot of FakeCam setup...");
+    await this.page.screenshot({
+      path: "fakecam-screenshot.png",
+      fullPage: true,
+    });
+    logStep("Screenshot saved as fakecam-screenshot.png");
     await waitAndClick(this.zoomFrame, config.selectors.cameraToggle);
     await sleep(config.timeouts.transition);
     await waitAndClick(this.zoomFrame, config.selectors.fakeCamOption);

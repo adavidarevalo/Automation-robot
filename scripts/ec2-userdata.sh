@@ -22,7 +22,7 @@ sudo modprobe v4l2loopback \
 # Ejecutar ffmpeg en segundo plano para mantener el video en loop
 nohup ffmpeg -re -stream_loop -1 -i "./public/video.mp4" \
   -vcodec rawvideo -pix_fmt yuv420p \
-  -f v4l2 /dev/video2 > /dev/null 2>&1 &
+  -f v4l2 /dev/video2 > /dev/null
 
 # Esperar un momento para asegurarse de que ffmpeg inició correctamente
 sleep 4

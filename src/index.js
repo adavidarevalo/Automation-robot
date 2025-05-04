@@ -65,10 +65,6 @@ class ZoomAutomation {
     logStep('Joining meeting...');
     await this.zoomFrame.type(config.selectors.nameInput, config.zoom.userName);
     await waitAndClick(this.zoomFrame, config.selectors.joinButton);
-    await this.page.screenshot({
-      path: "join-screenshot.png",
-      fullPage: true,
-    });
   }
 
   async start() {
@@ -80,6 +76,10 @@ class ZoomAutomation {
       await this.switchToFakeCam();
       await this.joinMeeting();
       logStep('Successfully joined Zoom meeting!');
+      await this.page.screenshot({
+        path: "join-screenshot.png",
+        fullPage: true,
+      });
     } catch (error) {
       logStep(`Error: ${error.message}`);
       throw error;

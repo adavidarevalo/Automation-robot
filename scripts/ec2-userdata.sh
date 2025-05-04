@@ -19,20 +19,14 @@ sudo modprobe v4l2loopback \
   video_nr=2 \
   card_label="FakeCam"  
 
-# Get the directory where the script is located
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 # Ejecutar ffmpeg en segundo plano para mantener el video en loop
 nohup ffmpeg -re -stream_loop -1 -i "./public/video.mp4" \
   -vcodec rawvideo -pix_fmt yuv420p \
   -f v4l2 /dev/video2 > /dev/null 2>&1 &
 
 # Esperar un momento para asegurarse de que ffmpeg inició correctamente
-sleep 3
+sleep 4
 echo "Webcam virtual con video en loop iniciada en segundo plano"
-
-
-
 
 sudo apt install -y nodejs npm 
 sudo npm i

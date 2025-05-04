@@ -44,32 +44,33 @@ async function navigateToZoom(page) {
   await new Promise(resolve => setTimeout(resolve, 2000));
 }
 
-async function handleDevicePermissions(frame) {
-  console.log("Handling device permissions...");
+async function handleMuteMeeting(frame) {
+  console.log("Handling mute meeting...");
   try {
-    await frame.waitForSelector(SELECTORS.continueWithoutDevices, { timeout: 15000 });
-    await frame.click(SELECTORS.continueWithoutDevices);
-    console.log("Clicked continue without mic/camera button");
-    
-    // Second attempt after delay in case of double prompt
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    try {
-      await frame.click(SELECTORS.continueWithoutDevices);
-      console.log("Clicked continue button again after delay");
-    } catch {
-      console.log("Second button click not needed");
-    }
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+
+    await frame.waitForSelector(
+      'button.preview-video__control-button[aria-label="Mute"]',
+      { timeout: 15000 }
+    );
+    await frame.click(
+      'button.preview-video__control-button[aria-label="Mute"]'
+    );
+    console.log("Clicked mute button");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   } catch (error) {
-    throw new Error(`Failed to handle device permissions: ${error.message}`);
+    throw new Error(`Failed to mute meeting: ${error.message}`);
   }
 }
+
+async function handleChangeCamera(frame) {}
 
 async function joinMeeting(frame) {
   try {
     await frame.waitForSelector(SELECTORS.nameInput, { timeout: 15000 });
     await frame.type(SELECTORS.nameInput, CONFIG.userName);
     console.log("Typed name into input field");
-    
+
     await frame.waitForSelector(SELECTORS.joinButton);
     await frame.click(SELECTORS.joinButton);
     console.log("Clicked Join button");
@@ -97,11 +98,10 @@ async function openZoomMeeting() {
     }
 
     // Handle meeting join flow
-    await handleDevicePermissions(zoomFrame);
-    await joinMeeting(zoomFrame);
-
+    await handleMuteMeeting(zoomFrame);
+    // await joinMeeting(zoomFrame);
   } catch (error) {
-    console.error('An error occurred:', error.message);
+    console.error("An error occurred:", error.message);
   } finally {
     // Ensure browser cleanup
     if (browser) {

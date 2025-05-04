@@ -40,7 +40,7 @@ echo "Installing npm dependencies..."
 cd $APP_DIR
 su - ubuntu -c "cd $APP_DIR && npm install"
 
-RUN npx puppeteer browsers install chrome
+npx puppeteer browsers install chrome
 
 sudo apt install -y \
   libatk-bridge2.0-0t64 \
@@ -68,7 +68,9 @@ sudo apt install -y \
   libvulkan1 \
   xdg-utils
 
+apt-get install -y tmux
 
-
-CMD ["npm", "start"]
-
+tmux new-session -d -s automation "sudo bash -c 'cd $APP_DIR/scripts/webcam && ./index.sh'"
+tmux split-window -v -t automation "sudo bash -c 'cd $APP_DIR && npm start'"
+tmux select-layout -t automation even-vertical
+tmux attach -t automation

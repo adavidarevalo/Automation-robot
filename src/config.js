@@ -1,6 +1,6 @@
 const CONFIG = {
   browser: {
-    headless: false,
+    headless: true,
     args: [
       "--start-maximized",
       "--no-sandbox",
@@ -21,11 +21,12 @@ const CONFIG = {
   selectors: {
     joinFromBrowser: 'a[role="button"][web_client=""]',
     continueWithoutDevices: 'div[role="button"].continue-without-mic-camera',
-    nameInput: '#input-for-name',
-    joinButton: 'button.preview-join-button',
+    nameInput: "#input-for-name",
+    joinButton: "button.preview-join-button",
     muteButton: 'button.preview-video__control-button[aria-label="Mute"]',
     cameraToggle: 'button.preview__toggle[aria-label="More video controls"]',
-    fakeCamOption: 'li.preview__dropdown-menuitem[aria-label="Select a Camera FakeCam"]',
+    fakeCamOption:
+      'li.preview__dropdown-menuitem[aria-label="Select a Camera FakeCam"]',
   },
 };
 

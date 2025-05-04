@@ -5,12 +5,17 @@ const URL = require('url').URL;
 const CONFIG = {
   browserOptions: {
     headless: false,
-    args: ["--start-maximized", "--no-sandbox", "--disable-setuid-sandbox", "--use-fake-ui-for-media-stream"],
+    args: [
+      "--start-maximized",
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--use-fake-ui-for-media-stream",
+    ],
   },
   viewport: { width: 1366, height: 768 },
   zoomUrl:
     "https://byupathway.zoom.us/j/8013624576?pwd=MGZ5SnQ1b2RzVFZUS3lFNDlnbnhHUT09#success",
-  userName: "David Arevalo",
+  userName: "Angel David Arevalo",
 };
 
 // Selectors
@@ -65,6 +70,7 @@ async function handleMuteMeeting(frame) {
 async function handleChangeCamera(frame) {
   console.log("Handling camera change...");
   try {
+    // Click the video controls toggle button
     await frame.waitForSelector(
       'button.preview__toggle[aria-label="More video controls"]',
       { timeout: 15000 }
@@ -73,6 +79,17 @@ async function handleChangeCamera(frame) {
       'button.preview__toggle[aria-label="More video controls"]'
     );
     console.log("Clicked video controls toggle");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // Select FakeCam from the dropdown
+    await frame.waitForSelector(
+      'li.preview__dropdown-menuitem[aria-label="Select a Camera FakeCam"]',
+      { timeout: 15000 }
+    );
+    await frame.click(
+      'li.preview__dropdown-menuitem[aria-label="Select a Camera FakeCam"]'
+    );
+    console.log("Selected FakeCam camera");
   } catch (error) {
     throw new Error(`Failed to change camera: ${error.message}`);
   }
@@ -113,7 +130,7 @@ async function openZoomMeeting() {
     // Handle meeting join flow
     await handleMuteMeeting(zoomFrame);
     await handleChangeCamera(zoomFrame);
-    // await joinMeeting(zoomFrame);
+    await joinMeeting(zoomFrame);
   } catch (error) {
     console.error("An error occurred:", error.message);
   } finally {

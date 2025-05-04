@@ -1,10 +1,11 @@
 const puppeteer = require('puppeteer');
+const URL = require('url').URL;
 
 // Configuration
 const CONFIG = {
   browserOptions: {
     headless: false,
-    args: ["--start-maximized", "--no-sandbox", "--disable-setuid-sandbox"],
+    args: ["--start-maximized", "--no-sandbox", "--disable-setuid-sandbox", "--use-fake-ui-for-media-stream"],
   },
   viewport: { width: 1366, height: 768 },
   zoomUrl:
@@ -23,7 +24,14 @@ const SELECTORS = {
 async function initializeBrowser() {
   console.log("Launching browser...");
   const browser = await puppeteer.launch(CONFIG.browserOptions);
-  const page = await browser.newPage();
+  
+  // Set up permissions
+  const context = browser.defaultBrowserContext();
+  await context.clearPermissionOverrides();
+  const zoomUrl = new URL(CONFIG.zoomUrl);
+  await context.overridePermissions(zoomUrl.origin, ['camera', 'microphone']);
+  
+  const page = await context.newPage();
   await page.setViewport(CONFIG.viewport);
   return { browser, page };
 }
@@ -39,17 +47,18 @@ async function navigateToZoom(page) {
 async function handleDevicePermissions(frame) {
   console.log("Handling device permissions...");
   try {
-    // await frame.waitForSelector(SELECTORS.continueWithoutDevices);
-    // await frame.click(SELECTORS.continueWithoutDevices);
-    // console.log("Clicked continue without mic/camera button");
-    // // Second attempt after delay
-    // await new Promise(resolve => setTimeout(resolve, 1000));
-    // try {
-    //   await frame.click(SELECTORS.continueWithoutDevices);
-    //   console.log("Clicked continue button again after delay");
-    // } catch {
-    //   console.log("Second button click not needed");
-    // }
+    await frame.waitForSelector(SELECTORS.continueWithoutDevices, { timeout: 15000 });
+    await frame.click(SELECTORS.continueWithoutDevices);
+    console.log("Clicked continue without mic/camera button");
+    
+    // Second attempt after delay in case of double prompt
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      await frame.click(SELECTORS.continueWithoutDevices);
+      console.log("Clicked continue button again after delay");
+    } catch {
+      console.log("Second button click not needed");
+    }
   } catch (error) {
     throw new Error(`Failed to handle device permissions: ${error.message}`);
   }
@@ -57,10 +66,13 @@ async function handleDevicePermissions(frame) {
 
 async function joinMeeting(frame) {
   try {
-    // await frame.type(SELECTORS.nameInput, CONFIG.userName);
-    // console.log("Typed name into input field");
-    // await frame.click(SELECTORS.joinButton);
-    // console.log("Clicked Join button");
+    await frame.waitForSelector(SELECTORS.nameInput, { timeout: 15000 });
+    await frame.type(SELECTORS.nameInput, CONFIG.userName);
+    console.log("Typed name into input field");
+    
+    await frame.waitForSelector(SELECTORS.joinButton);
+    await frame.click(SELECTORS.joinButton);
+    console.log("Clicked Join button");
   } catch (error) {
     throw new Error(`Failed to join meeting: ${error.message}`);
   }

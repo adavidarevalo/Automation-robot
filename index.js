@@ -57,13 +57,26 @@ async function handleMuteMeeting(frame) {
       'button.preview-video__control-button[aria-label="Mute"]'
     );
     console.log("Clicked mute button");
-    await new Promise((resolve) => setTimeout(resolve, 1000));
   } catch (error) {
     throw new Error(`Failed to mute meeting: ${error.message}`);
   }
 }
 
-async function handleChangeCamera(frame) {}
+async function handleChangeCamera(frame) {
+  console.log("Handling camera change...");
+  try {
+    await frame.waitForSelector(
+      'button.preview__toggle[aria-label="More video controls"]',
+      { timeout: 15000 }
+    );
+    await frame.click(
+      'button.preview__toggle[aria-label="More video controls"]'
+    );
+    console.log("Clicked video controls toggle");
+  } catch (error) {
+    throw new Error(`Failed to change camera: ${error.message}`);
+  }
+}
 
 async function joinMeeting(frame) {
   try {
@@ -99,6 +112,7 @@ async function openZoomMeeting() {
 
     // Handle meeting join flow
     await handleMuteMeeting(zoomFrame);
+    await handleChangeCamera(zoomFrame);
     // await joinMeeting(zoomFrame);
   } catch (error) {
     console.error("An error occurred:", error.message);

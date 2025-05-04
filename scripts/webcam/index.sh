@@ -11,6 +11,9 @@ sudo modprobe v4l2loopback \
   video_nr=2 \
   card_label="FakeCam"  
 
-ffmpeg -re -stream_loop -1 -i video.mp4 \
+# Get the directory where the script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+ffmpeg -re -stream_loop -1 -i "$SCRIPT_DIR/video.mp4" \
   -vcodec rawvideo -pix_fmt yuv420p \
   -f v4l2 /dev/video2

@@ -36,12 +36,11 @@ echo "=== Step 4: Setting up Application ==="
 APP_DIR="/home/ubuntu/automation-robot"
 echo "Creating application directory at $APP_DIR"
 mkdir -p $APP_DIR
-chown ubuntu:ubuntu $APP_DIR
 echo "✓ Directory created"
 
 echo "=== Step 5: Cloning Repository ==="
 echo "Cloning Automation-robot repository..."
-su - ubuntu -c "git clone https://github.com/adavidarevalo/Automation-robot.git $APP_DIR"
+git clone https://github.com/adavidarevalo/Automation-robot.git $APP_DIR
 echo "✓ Repository cloned"
 
 # The video should be in the repository's public folder
@@ -54,19 +53,14 @@ fi
 echo "=== Step 6: Installing Dependencies ==="
 echo "Installing npm dependencies..."
 cd $APP_DIR
-su - ubuntu -c "cd $APP_DIR && npm install"
+cd $APP_DIR && npm install
 echo "✓ NPM dependencies installed"
 
 echo "=== Step 7: Setting up Chrome ==="
 echo "Installing Chrome for Puppeteer..."
-su - ubuntu -c "cd $APP_DIR && npx puppeteer browsers install chrome"
+cd $APP_DIR && npx puppeteer browsers install chrome -y
 
-# Verify Chrome installation
-CHROME_DIR="/home/ubuntu/.cache/puppeteer/chrome"
-if [ ! -d "$CHROME_DIR" ]; then
-    echo "Error: Chrome installation directory not found"
-    exit 1
-fi
+
 echo "✓ Chrome installed and verified"
 
 echo "=== Step 8: Installing Chrome Dependencies ==="
@@ -89,7 +83,7 @@ apt-get install -y -q \
     libglib2.0-0t64 \
     libgtk-3-0t64
 
-sudo apt install -y \
+apt install -y \
   wget \
   curl \
   unzip \
@@ -113,7 +107,7 @@ sudo apt install -y \
   libxcb-dri3-0 \
   ca-certificates
 
-sudo apt install -y \
+apt install -y \
   libxss1 \
   libappindicator3-1 \
   libgdk-pixbuf2.0-0 \
@@ -145,17 +139,15 @@ modprobe v4l2loopback video_nr=2 card_label="FakeCam" exclusive_caps=1
 
 echo "=== Step 10: Starting Services ==="
 echo "Starting video stream..."
-su - ubuntu -c "ffmpeg -re -stream_loop -1 -i '$APP_DIR/public/video.mp4' \
+ffmpeg -re -stream_loop -1 -i '$APP_DIR/public/video.mp4' \
   -vcodec rawvideo -pix_fmt yuv420p \
-  -f v4l2 /dev/video2 > /dev/null 2>&1 &"
+  -f v4l2 /dev/video2 > /dev/null 2>&1 &
 
 # Install Chrome for Puppeteer and start the application
-echo "Installing Chrome for Puppeteer..."
-su - ubuntu -c "cd $APP_DIR && npx puppeteer browsers install chrome"
 echo "✓ Chrome for Puppeteer installed"
 
 echo "Starting the application..."
-su - ubuntu -c "cd $APP_DIR && npm start &"
+cd $APP_DIR && npm start
 
 echo "=== Setup Complete! ==="
 echo "✓ Video stream running"

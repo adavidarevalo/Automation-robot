@@ -3,12 +3,13 @@ const puppeteer = require('puppeteer');
 // Configuration
 const CONFIG = {
   browserOptions: {
-    headless: true,
-    args: ["--start-maximized", "--no-sandbox", "--disable-setuid-sandbox"]
+    headless: false,
+    args: ["--start-maximized", "--no-sandbox", "--disable-setuid-sandbox"],
   },
   viewport: { width: 1366, height: 768 },
-  zoomUrl: "https://byupathway.zoom.us/j/8013624576?pwd=MGZ5SnQ1b2RzVFZUS3lFNDlnbnhHUT09#success",
-  userName: "David Arevalo"
+  zoomUrl:
+    "https://byupathway.zoom.us/j/8013624576?pwd=MGZ5SnQ1b2RzVFZUS3lFNDlnbnhHUT09#success",
+  userName: "David Arevalo",
 };
 
 // Selectors
@@ -38,18 +39,17 @@ async function navigateToZoom(page) {
 async function handleDevicePermissions(frame) {
   console.log("Handling device permissions...");
   try {
-    await frame.waitForSelector(SELECTORS.continueWithoutDevices);
-    await frame.click(SELECTORS.continueWithoutDevices);
-    console.log("Clicked continue without mic/camera button");
-
-    // Second attempt after delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    try {
-      await frame.click(SELECTORS.continueWithoutDevices);
-      console.log("Clicked continue button again after delay");
-    } catch {
-      console.log("Second button click not needed");
-    }
+    // await frame.waitForSelector(SELECTORS.continueWithoutDevices);
+    // await frame.click(SELECTORS.continueWithoutDevices);
+    // console.log("Clicked continue without mic/camera button");
+    // // Second attempt after delay
+    // await new Promise(resolve => setTimeout(resolve, 1000));
+    // try {
+    //   await frame.click(SELECTORS.continueWithoutDevices);
+    //   console.log("Clicked continue button again after delay");
+    // } catch {
+    //   console.log("Second button click not needed");
+    // }
   } catch (error) {
     throw new Error(`Failed to handle device permissions: ${error.message}`);
   }
@@ -57,11 +57,10 @@ async function handleDevicePermissions(frame) {
 
 async function joinMeeting(frame) {
   try {
-    await frame.type(SELECTORS.nameInput, CONFIG.userName);
-    console.log("Typed name into input field");
-
-    await frame.click(SELECTORS.joinButton);
-    console.log("Clicked Join button");
+    // await frame.type(SELECTORS.nameInput, CONFIG.userName);
+    // console.log("Typed name into input field");
+    // await frame.click(SELECTORS.joinButton);
+    // console.log("Clicked Join button");
   } catch (error) {
     throw new Error(`Failed to join meeting: ${error.message}`);
   }

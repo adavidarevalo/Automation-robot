@@ -1,3 +1,5 @@
+const { findNearestMeeting } = require("./utils");
+
 const CONFIG = {
   browser: {
     headless: true,
@@ -15,8 +17,8 @@ const CONFIG = {
     preparation: 5000,
   },
   zoom: {
-    url: "https://byupathway.zoom.us/j/8013624576?pwd=MGZ5SnQ1b2RzVFZUS3lFNDlnbnhHUT09#success",
-    userName: "Angel David Arevalo",
+    url: findNearestMeeting(),
+    userName: "Angel Arevalo",
   },
   selectors: {
     joinFromBrowser: 'a[role="button"][web_client=""]',

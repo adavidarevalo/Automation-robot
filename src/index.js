@@ -58,6 +58,18 @@ class ZoomAutomation {
   async joinMeeting() {
     logStep('Joining meeting...');
     await this.zoomFrame.type(config.selectors.nameInput, config.zoom.userName);
+    
+    // Check if password field exists and if we have a password in config
+    try {
+      const passwordFieldExists = await this.zoomFrame.$(config.selectors.passwordInput);
+      if (passwordFieldExists && config.zoom.password) {
+        logStep('Entering meeting password...');
+        await this.zoomFrame.type(config.selectors.passwordInput, config.zoom.password);
+      }
+    } catch (error) {
+      logStep('No password field found or not required');
+    }
+    
     await waitAndClick(this.zoomFrame, config.selectors.joinButton);
   }
 

@@ -51,11 +51,25 @@ function findNearestMeeting() {
     }
   }
   
-  // Debug log
+  // Return the meeting data or default values
   if (closestMeeting) {
-    return closestMeeting;
+    // Debug log
+    console.log('🚀 ~ findNearestMeeting ~ found closest meeting:', closestMeeting.title);
+    
+    // Return the meeting object - ensure it has all required properties
+    return {
+      url: closestMeeting.url,
+      password: closestMeeting.password || null,  // May be undefined for some meetings
+      title: closestMeeting.title
+    };
   } else {
-    return "https://zoom.us";
+    console.log('🚀 ~ findNearestMeeting ~ no meeting found within time window');
+    // Return default values as an object
+    return {
+      url: "https://zoom.us",
+      password: null,
+      title: "No scheduled meeting"
+    };
   }
 }
 

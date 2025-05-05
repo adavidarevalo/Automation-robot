@@ -53,8 +53,6 @@ function findNearestMeeting() {
   
   // Return the meeting data or default values
   if (closestMeeting) {
-    // Debug log
-    console.log('🚀 ~ findNearestMeeting ~ found closest meeting:', closestMeeting.title);
     
     // Return the meeting object - ensure it has all required properties
     return {
@@ -63,7 +61,6 @@ function findNearestMeeting() {
       title: closestMeeting.title
     };
   } else {
-    console.log('🚀 ~ findNearestMeeting ~ no meeting found within time window');
     // Return default values as an object
     return {
       url: "https://zoom.us",

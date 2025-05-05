@@ -3,12 +3,12 @@ variable "instance_type" {
   type        = string
 }
 
-variable "key_name" {
-  description = "EC2 key pair name"
+variable "userdata_script_path" {
+  description = "Path to userdata script"
   type        = string
 }
 
-variable "userdata_script_path" {
-  description = "Path to userdata script"
+variable "ami_id" {
+  description = "The ID of the AMI to use for the EC2 instance"
   type        = string
 }

@@ -44,5 +44,11 @@ variable "schedule_array" {
 variable "timezone" {
   description = "Timezone for the schedules"
   type        = string
-  default     = "America/Denver" # Mountain Time Zone
+  default     = "America/Denver" # Mountain Time Zone (Provo, Utah)
+}
+
+variable "ami_id" {
+  description = "The ID of the AMI to use for the EC2 instance"
+  type        = string
+  default     = "ami-04f7a54071e74f488"
 }

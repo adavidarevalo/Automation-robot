@@ -28,7 +28,8 @@ resource "aws_iam_policy" "lambda_ec2_policy" {
           "ec2:TerminateInstances",
           "ec2:DescribeInstances",
           "ec2:DescribeLaunchTemplates",
-          "ec2:DescribeLaunchTemplateVersions"
+          "ec2:DescribeLaunchTemplateVersions",
+          "ec2:CreateTags"
         ]
         Effect   = "Allow"
         Resource = "*"

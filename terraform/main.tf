@@ -12,8 +12,8 @@ module "iam" {
 module "ec2" {
   source                = "./modules/ec2"
   instance_type         = var.instance_type
-  key_name              = var.key_name
   userdata_script_path  = var.userdata_script_path
+  ami_id                = var.ami_id
 }
 
 module "lambda" {

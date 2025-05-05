@@ -17,3 +17,6 @@ default_tags = {
   ManagedBy   = "Terraform"
   Owner       = "DevOps"
 }
+
+# AMI ID for EC2 instance
+ami_id = "ami-04f7a54071e74f488"

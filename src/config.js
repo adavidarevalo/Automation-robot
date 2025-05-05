@@ -18,6 +18,7 @@ const CONFIG = {
   },
   zoom: {
     url: findNearestMeeting().url,
+    password: findNearestMeeting().password,
     userName: "Angel Arevalo",
   },
   selectors: {
@@ -25,7 +26,7 @@ const CONFIG = {
     continueWithoutDevices: 'div[role="button"].continue-without-mic-camera',
     nameInput: "#input-for-name",
     joinButton: "button.preview-join-button",
-    muteButton: 'button.preview-video__control-button[aria-label="Mute"]',
+    muteButton: '#preview-audio-control-button',
     cameraToggle: 'button.preview__toggle[aria-label="More video controls"]',
     fakeCamOption:
       'li.preview__dropdown-menuitem[aria-label="Select a Camera FakeCam"]',

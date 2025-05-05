@@ -27,8 +27,6 @@ class ZoomAutomation {
   async navigateToZoom() {
     logStep('Navigating to Zoom meeting...');
     await this.page.goto(config.zoom.url);
-    await waitAndClick(this.page, config.selectors.joinFromBrowser);
-    await sleep(config.timeouts.transition);
   }
 
   async setupZoomFrame() {

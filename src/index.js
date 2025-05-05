@@ -72,10 +72,6 @@ class ZoomAutomation {
       // await this.switchToFakeCam();
       await this.joinMeeting();
       logStep('Successfully joined Zoom meeting!');
-      await this.page.screenshot({
-        path: "join-screenshot.png",
-        fullPage: true,
-      });
     } catch (error) {
       logStep(`Error: ${error.message}`);
       throw error;

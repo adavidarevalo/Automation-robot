@@ -1,8 +1,9 @@
-const { timeouts } = require('./config');
+// Avoid circular dependency with config.js
 const meetings = require('./data.json');
+const moment = require('moment-timezone');
 
 async function waitAndClick(frame, selector, options = {}) {
-  const timeout = options.timeout || timeouts.element;
+  const timeout = options.timeout || 15000; // Default timeout: 15 seconds
   await frame.waitForSelector(selector, { timeout });
   await frame.click(selector);
 }
@@ -16,44 +17,46 @@ function logStep(message) {
 }
 
 function findNearestMeeting() {
-  // Get current time in Provo timezone (UTC-6)
-  const now = new Date();
-  const provoTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Denver' }));
-  const currentDay = provoTime.toLocaleDateString('en-US', { weekday: 'lowercase' });
-  const currentHour = provoTime.getHours();
-  const currentMinute = provoTime.getMinutes();
-
-  let nearestMeeting = null;
-  let minDifference = Infinity;
+  // Get current time in Denver timezone (America/Denver)
+  const now = moment().tz('America/Denver');
+  const currentDay = now.format('dddd').toLowerCase();
+    
+  // Define window: 20 minutes before and 20 minutes after
+  const windowStart = moment(now).subtract(20, 'minutes');
+  const windowEnd = moment(now).add(20, 'minutes');
+  
+  // Find the closest meeting within the time window
+  let closestMeeting = null;
+  let smallestDifference = Infinity;
 
   for (const meeting of meetings) {
     if (meeting.day === currentDay) {
-      const [time, period] = meeting.time.split(' ');
-      const [hours, minutes] = time.split(':');
-      let meetingHours = parseInt(hours);
-      const meetingMinutes = parseInt(minutes);
-
-      // Convert to 24-hour format
-      if (period === 'PM' && meetingHours !== 12) {
-        meetingHours += 12;
-      } else if (period === 'AM' && meetingHours === 12) {
-        meetingHours = 0;
-      }
-
-      // Calculate time difference in minutes
-      const meetingTimeInMinutes = meetingHours * 60 + meetingMinutes;
-      const currentTimeInMinutes = currentHour * 60 + currentMinute;
-      const difference = meetingTimeInMinutes - currentTimeInMinutes;
-
-      // Only consider future meetings (positive difference)
-      if (difference > 0 && difference < minDifference) {
-        minDifference = difference;
-        nearestMeeting = meeting;
+      // Parse meeting time with moment
+      const meetingTime = moment(meeting.time, 'h:mm A').tz('America/Denver');
+      
+      // Set meeting time to today
+      meetingTime.year(now.year()).month(now.month()).date(now.date());
+      
+      // Check if meeting is within our window
+      if (meetingTime.isBetween(windowStart, windowEnd, null, '[]')) {
+        // Calculate the absolute time difference in minutes
+        const timeDifference = Math.abs(meetingTime.diff(now, 'minutes'));
+        
+        // If this meeting is closer than the previous closest, update it
+        if (timeDifference < smallestDifference) {
+          smallestDifference = timeDifference;
+          closestMeeting = meeting;
+        }
       }
     }
   }
-
-  return nearestMeeting ? nearestMeeting.link : null;
+  
+  // Debug log
+  if (closestMeeting) {
+    return closestMeeting;
+  } else {
+    return "https://zoom.us";
+  }
 }
 
 module.exports = {

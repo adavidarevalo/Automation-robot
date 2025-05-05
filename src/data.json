@@ -1,20 +1,26 @@
 [
     {
         "day": "thursday",
-        "time": "8:15 PM",
-        "link": "https://byupw.zoom.us/j/91519398280?pwd=GAiJQPH5E7lwoLPa2fWBq3vA57t8Ho.1#success",
+        "time": "8:05 PM",
+        "url": "https://byupw.zoom.us/j/91519398280?pwd=GAiJQPH5E7lwoLPa2fWBq3vA57t8Ho.1#success",
         "title": "Phatway | Jesus Christ and His Everlasting Gospel B"
     },
     {
         "day": "wednesday",
         "time": "8:10 PM",
-        "link": "https://us02web.zoom.us/j/8934537424?pwd=c1B2TkdWdk52elR2cGZwTFBlc1pldz09&omn=85756327501#success",
+        "url": "https://us02web.zoom.us/j/8934537424?pwd=c1B2TkdWdk52elR2cGZwTFBlc1pldz09&omn=85756327501#success",
         "title": "Institutes | Jesus Christ and His Everlasting Gospel"
     },
     {
         "day": "wednesday",
         "time": "10:20 AM",
-        "link": "https://zoom.us/j/5216881114?pwd=cCt0R0Z1bUg0Y0lIZmZROVFEWXhSZz09&_x_zm_rtaid=r0gl_pfOTf6fmvL3El6G0Q.1746465638966.16962f2e86230e755b43f92552497543&_x_zm_rhtaid=728#success",
+        "url": "https://zoom.us/j/5216881114?pwd=cCt0R0Z1bUg0Y0lIZmZROVFEWXhSZz09&_x_zm_rtaid=r0gl_pfOTf6fmvL3El6G0Q.1746465638966.16962f2e86230e755b43f92552497543&_x_zm_rhtaid=728#success",
+        "title": "Institutes | The Parables of Jesus Christ"
+    },
+    {
+        "day": "monday",
+        "time": "03:00 PM",
+        "url": "https://zoom.us/j/5216881114?pwd=cCt0R0Z1bUg0Y0lIZmZROVFEWXhSZz09&_x_zm_rtaid=r0gl_pfOTf6fmvL3El6G0Q.1746465638966.16962f2e86230e755b43f92552497543&_x_zm_rhtaid=728#success",
         "title": "Institutes | The Parables of Jesus Christ"
     }
 ]

@@ -54,10 +54,6 @@ class ZoomAutomation {
     logStep("Screenshot saved as fakecam-screenshot.png");
     await waitAndClick(this.zoomFrame, config.selectors.cameraToggle);
     await sleep(config.timeouts.transition);
-    await this.page.screenshot({
-      path: "fakecam-screenshot.png",
-      fullPage: true,
-    });
     await waitAndClick(this.zoomFrame, config.selectors.fakeCamOption);
   }
 
@@ -73,7 +69,7 @@ class ZoomAutomation {
       await this.navigateToZoom();
       await this.setupZoomFrame();
       await this.muteMicrophone();
-      await this.switchToFakeCam();
+      // await this.switchToFakeCam();
       await this.joinMeeting();
       logStep('Successfully joined Zoom meeting!');
       await this.page.screenshot({

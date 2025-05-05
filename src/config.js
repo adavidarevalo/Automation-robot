@@ -2,7 +2,7 @@ const { findNearestMeeting } = require("./utils");
 
 const CONFIG = {
   browser: {
-    headless: true,
+    headless: false,
     args: [
       "--start-maximized",
       "--no-sandbox",
@@ -17,7 +17,7 @@ const CONFIG = {
     preparation: 5000,
   },
   zoom: {
-    url: findNearestMeeting(),
+    url: findNearestMeeting().url,
     userName: "Angel Arevalo",
   },
   selectors: {

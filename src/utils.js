@@ -51,7 +51,7 @@ function findNearestMeeting() {
     }
   }
   
-  // Return the meeting data or default values
+  // Debug log
   if (closestMeeting) {
     
     // Return the meeting object - ensure it has all required properties

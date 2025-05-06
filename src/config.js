@@ -25,7 +25,6 @@ const CONFIG = {
     joinFromBrowser: 'a[role="button"][web_client=""]',
     continueWithoutDevices: 'div[role="button"].continue-without-mic-camera',
     nameInput: "#input-for-name",
-    passwordInput: "#input-for-pwd",
     joinButton: "button.preview-join-button",
     muteButton: '#preview-audio-control-button',
     cameraToggle: 'button.preview__toggle[aria-label="More video controls"]',

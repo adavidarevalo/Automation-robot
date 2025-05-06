@@ -1,27 +1,30 @@
 [
     {
-        "day": "thursday",
-        "time": "8:05 PM",
-        "url": "https://byupw.zoom.us/j/91519398280?pwd=GAiJQPH5E7lwoLPa2fWBq3vA57t8Ho.1#success",
-        "title": "Phatway | Jesus Christ and His Everlasting Gospel B"
+      "day": "thursday",
+      "time": "8:10 PM",
+      "url": "https://app.zoom.us/wc/91519398280/join?fromPWA=1",
+      "password": "GAiJQPH5E7lwoLPa2fWBq3vA57t8Ho.1",
+      "title": "Phatway | Jesus Christ and His Everlasting Gospel B"
     },
     {
-        "day": "wednesday",
-        "time": "8:10 PM",
-        "url": "https://us02web.zoom.us/j/8934537424?pwd=c1B2TkdWdk52elR2cGZwTFBlc1pldz09&omn=85756327501#success",
-        "title": "Institutes | Jesus Christ and His Everlasting Gospel"
+      "day": "wednesday",
+      "time": "8:15 PM",
+      "url": "https://app.zoom.us/wc/8934537424/join?fromPWA=1",
+      "password": "c1B2TkdWdk52elR2cGZwTFBlc1pldz09",
+      "title": "Institutes | Jesus Christ and His Everlasting Gospel"
     },
     {
-        "day": "wednesday",
-        "time": "10:20 AM",
-        "url": "https://zoom.us/j/5216881114?pwd=cCt0R0Z1bUg0Y0lIZmZROVFEWXhSZz09&_x_zm_rtaid=r0gl_pfOTf6fmvL3El6G0Q.1746465638966.16962f2e86230e755b43f92552497543&_x_zm_rhtaid=728#success",
-        "title": "Institutes | The Parables of Jesus Christ"
+      "day": "wednesday",
+      "time": "10:25 AM",
+      "url": "https://app.zoom.us/wc/5216881114/join?fromPWA=1",
+      "password": "cCt0R0Z1bUg0Y0lIZmZROVFEWXhSZz09",
+      "title": "Institutes | The Parables of Jesus Christ"
     },
     {
-        "day": "monday",
-        "time": "6:40 PM",
-        "url": "https://app.zoom.us/wc/88991871799/join?fromPWA=1",
-        "password": "yQogbk882k3lzpvOXZGJqWok8LWlxF.1",
-        "title": "Phatway | Jesus Christ and His Everlasting Gospel B"
-        }
-]
+      "day": "thursday",
+      "time": "5:55 PM",
+      "url": "https://app.zoom.us/wc/97629035533/join?fromPWA=1",
+      "title": "Institutes | Teaching and Doctrine of the book of Mormon",
+      "password": "mlbGuCSUVyZXpG034Lv5AOObF2x6Ba.1"
+    }
+  ]

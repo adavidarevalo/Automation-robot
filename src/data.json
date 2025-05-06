@@ -26,5 +26,13 @@
       "url": "https://app.zoom.us/wc/97629035533/join?fromPWA=1",
       "title": "Institutes | Teaching and Doctrine of the book of Mormon",
       "password": "mlbGuCSUVyZXpG034Lv5AOObF2x6Ba.1"
-    }
+    },
+    {
+        "day": "monday",
+        "time": "9:50 PM",
+        "url": "https://app.zoom.us/wc/81328552034/join?fromPWA=1",
+        "title": "test",
+        "password": "0OaPISXAkaLkb0eUax9Gvsr2auWV2f.1"
+      }
+
   ]

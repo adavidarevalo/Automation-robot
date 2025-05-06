@@ -78,7 +78,9 @@ class ZoomAutomation {
     try {
       // Wait for chat button to be available
       await sleep(config.timeouts.preparation);
-      
+      await sleep(config.timeouts.preparation);
+      logStep('XXX');
+
       // Click on the chat button to open the chat panel
       await this.page.waitForSelector(config.selectors.chatButton);
       await this.page.click(config.selectors.chatButton);

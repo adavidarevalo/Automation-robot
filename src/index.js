@@ -73,6 +73,22 @@ class ZoomAutomation {
     await waitAndClick(this.zoomFrame, config.selectors.joinButton);
   }
 
+  async sendAdminMessage() {
+    logStep('Opening chat panel...');
+    try {
+      // Wait for chat button to be available
+      await sleep(config.timeouts.preparation);
+      
+      // Click on the chat button to open the chat panel
+      await this.page.waitForSelector(config.selectors.chatButton);
+      await this.page.click(config.selectors.chatButton);
+      logStep('Chat panel opened');
+    } catch (error) {
+      logStep(`Error opening chat panel: ${error.message}`);
+      // Continue execution even if sending message fails
+    }
+  }
+
   async start() {
     try {
       await this.initialize();
@@ -82,6 +98,7 @@ class ZoomAutomation {
       // await this.switchToFakeCam();
       await this.joinMeeting();
       logStep('Successfully joined Zoom meeting!');
+      await this.sendAdminMessage();
     } catch (error) {
       logStep(`Error: ${error.message}`);
       throw error;

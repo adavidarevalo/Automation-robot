@@ -31,6 +31,7 @@ const CONFIG = {
     cameraToggle: 'button.preview__toggle[aria-label="More video controls"]',
     fakeCamOption:
       'li.preview__dropdown-menuitem[aria-label="Select a Camera FakeCam"]',
+    chatButton: 'button.footer-button-base__button[aria-label="open the chat panel"]',
   },
 };
 

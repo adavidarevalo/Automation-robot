@@ -32,6 +32,7 @@ const CONFIG = {
     fakeCamOption:
       'li.preview__dropdown-menuitem[aria-label="Select a Camera FakeCam"]',
     chatButton: 'button.footer-button-base__button[aria-label="open the chat panel"]',
+    chatRecipientDropdown: 'button.chat-receiver-list__receiver[aria-label*="Send chat to"]',
   },
 };
 

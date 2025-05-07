@@ -81,10 +81,30 @@ class ZoomAutomation {
       await sleep(config.timeouts.preparation);
       logStep('Extracting HTML for debugging...');          
       try {
+        // First click the Chat button to open the chat panel
         await findAndClickElementWithText(this.zoomFrame, 'button', 'Chat', 5000);
         logStep('Found and clicked chat button using text search strategy');
+        
+        // Wait a moment for the chat panel to fully load
+        await sleep(2000);
+        
+        // Now click the chat recipient dropdown button
+        try {
+          await this.zoomFrame.waitForSelector(config.selectors.chatRecipientDropdown, { timeout: 5000 });
+          await this.zoomFrame.click(config.selectors.chatRecipientDropdown);
+          logStep('Successfully clicked chat recipient dropdown');
+        } catch (error) {
+          // If selector doesn't work, try findAndClickElementWithText as a fallback
+          logStep(`Could not click recipient dropdown with selector: ${error.message}`);
+          try {
+            await findAndClickElementWithText(this.zoomFrame, 'button', 'Everyone', 5000);
+            logStep('Found and clicked recipient dropdown using text search');
+          } catch (secondError) {
+            logStep(`Failed to click recipient dropdown: ${secondError.message}`);
+          }
+        }
       } catch (error) {
-        logStep(`Strategy 2 failed: ${error.message}`);
+        logStep(`Failed to click chat button: ${error.message}`);
       }
     } catch (error) {
       logStep(`Error opening chat panel: ${error.message}`);

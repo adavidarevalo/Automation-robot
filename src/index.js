@@ -85,9 +85,8 @@ class ZoomAutomation {
     logStep('Opening chat panel...');
     try {
       // Wait for Zoom UI to fully load
-      await sleep(config.timeouts.preparation);
-      await sleep(config.timeouts.preparation);
-      await sleep(config.timeouts.preparation);
+      // Usar el nuevo timeout específico para la preparación del chat
+      await sleep(config.timeouts.chatPreparation);
       
       // Step 1: Open the chat panel by clicking the Chat button
       await this._clickChatButton();

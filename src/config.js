@@ -15,6 +15,7 @@ const CONFIG = {
     element: 15000,
     transition: 2000,
     preparation: 5000,
+    chatPreparation: 15000, // Additional time needed for chat components to load
   },
   zoom: {
     url: findNearestMeeting().url,

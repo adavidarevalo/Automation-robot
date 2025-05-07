@@ -38,6 +38,7 @@ variable "schedule_array" {
   default = [
     ["Wednesday", "10:15"],
     ["Wednesday", "08:15"],
+    ["Wednesday", "16:00"],
     ["Thursday", "06:00"],
     ["Thursday", "06:10"],
     ["Thursday", "08:15"],

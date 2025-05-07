@@ -93,12 +93,34 @@ class ZoomAutomation {
           await this.zoomFrame.waitForSelector(config.selectors.chatRecipientDropdown, { timeout: 5000 });
           await this.zoomFrame.click(config.selectors.chatRecipientDropdown);
           logStep('Successfully clicked chat recipient dropdown');
+          
+          // Wait a moment for the dropdown to fully appear
+          await sleep(1000);
+          
+          // Now click the chat-receiver-list__appendix element
+          try {
+            await this.zoomFrame.waitForSelector(config.selectors.chatRecipientAppendix, { timeout: 5000 });
+            await this.zoomFrame.click(config.selectors.chatRecipientAppendix);
+            logStep('Successfully clicked chat recipient appendix');
+          } catch (appendixError) {
+            logStep(`Failed to click chat recipient appendix: ${appendixError.message}`);
+          }
         } catch (error) {
           // If selector doesn't work, try findAndClickElementWithText as a fallback
           logStep(`Could not click recipient dropdown with selector: ${error.message}`);
           try {
             await findAndClickElementWithText(this.zoomFrame, 'button', 'Everyone', 5000);
             logStep('Found and clicked recipient dropdown using text search');
+            
+            // Try to click the appendix after using the text search method
+            await sleep(1000);
+            try {
+              await this.zoomFrame.waitForSelector(config.selectors.chatRecipientAppendix, { timeout: 5000 });
+              await this.zoomFrame.click(config.selectors.chatRecipientAppendix);
+              logStep('Successfully clicked chat recipient appendix after text search');
+            } catch (appendixError) {
+              logStep(`Failed to click chat recipient appendix after text search: ${appendixError.message}`);
+            }
           } catch (secondError) {
             logStep(`Failed to click recipient dropdown: ${secondError.message}`);
           }

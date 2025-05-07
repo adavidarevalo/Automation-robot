@@ -39,10 +39,10 @@ resource "aws_cloudwatch_event_rule" "stop_ec2_rule" {
   for_each = local.schedules
   
   name        = "automation-robot-stop-${each.key}"
-  description = "Stop EC2 instance 1 hour and 10 minutes after starting on ${each.value.day}"
+  description = "Stop EC2 instance 50 minutes after starting on ${each.value.day}"
   
-  # Calculate stop time (1 hour and 10 minutes after start time)
-  schedule_expression = "cron(${(tonumber(split(":", each.value.time)[1]) + 10) % 60} ${(tonumber(split(":", each.value.time)[0]) + 1 + (tonumber(split(":", each.value.time)[1]) + 10) / 60) % 24} ? * ${substr(each.value.day, 0, 3)} *)"
+  # Calculate stop time (50 minutes after start time)
+  schedule_expression = "cron(${(tonumber(split(":", each.value.time)[1]) + 50) % 60} ${(tonumber(split(":", each.value.time)[0]) + (tonumber(split(":", each.value.time)[1]) + 50) / 60) % 24} ? * ${substr(each.value.day, 0, 3)} *)"
   event_bus_name     = "default"
   
   tags = {
@@ -69,7 +69,7 @@ resource "aws_sfn_state_machine" "ec2_lifecycle" {
     },
     "Wait": {
       "Type": "Wait",
-      "Seconds": 4200,
+      "Seconds": 3000,
       "Next": "StopEC2Instance"
     },
     "StopEC2Instance": {

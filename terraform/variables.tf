@@ -36,13 +36,13 @@ variable "schedule_array" {
   description = "Array of days and times to run the automation in Mountain Time Zone"
   type        = list(list(string))
   default = [
-    ["Wednesday", "10:15"],
-    ["Wednesday", "08:15"],
-    ["Wednesday", "16:00"],
-    ["Thursday", "06:00"],
-    ["Thursday", "06:10"],
-    ["Thursday", "08:15"],
-    ["Thursday", "08:25"]
+    ["wednesday", "16:15"],
+    ["wednesday", "02:15"],
+    ["wednesday", "22:00"],
+    ["thursday", "00:00"],
+    ["thursday", "00:10"],
+    ["thursday", "02:15"],
+    ["thursday", "02:25"]
   ]
 }
 

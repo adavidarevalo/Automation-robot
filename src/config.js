@@ -2,7 +2,7 @@ const { findNearestMeeting } = require("./utils");
 
 const CONFIG = {
   browser: {
-    headless: false,
+    headless: true,
     args: [
       "--start-maximized",
       "--no-sandbox",
@@ -28,14 +28,17 @@ const CONFIG = {
     nameInput: "#input-for-name",
     passwordInput: "#input-for-pwd",
     joinButton: "button.preview-join-button",
-    muteButton: '#preview-audio-control-button',
+    muteButton: "#preview-audio-control-button",
     cameraToggle: 'button.preview__toggle[aria-label="More video controls"]',
     fakeCamOption:
       'li.preview__dropdown-menuitem[aria-label="Select a Camera FakeCam"]',
-    chatButton: 'button.footer-button-base__button[aria-label="open the chat panel"]',
-    chatRecipientDropdown: 'button.chat-receiver-list__receiver[aria-label*="Send chat to"]',
-    chatRecipientAppendix: '.chat-receiver-list__appendix',
-    chatInputField: 'div.tiptap[contenteditable="true"][aria-placeholder="Type message here..."]',
+    chatButton:
+      'button.footer-button-base__button[aria-label="open the chat panel"]',
+    chatRecipientDropdown:
+      'button.chat-receiver-list__receiver[aria-label*="Send chat to"]',
+    chatRecipientAppendix: ".chat-receiver-list__appendix",
+    chatInputField:
+      'div.tiptap[contenteditable="true"][aria-placeholder="Type message here..."]',
     chatSendButton: 'button.chat-rtf-box__send[aria-label="send"]',
   },
 };

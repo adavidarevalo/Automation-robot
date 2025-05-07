@@ -110,7 +110,7 @@ class ZoomAutomation {
             try {
               await this.zoomFrame.waitForSelector(config.selectors.chatInputField, { timeout: 5000 });
               await this.zoomFrame.click(config.selectors.chatInputField);
-              await this.zoomFrame.type(config.selectors.chatInputField, 'Buenos Dias');
+              await this.zoomFrame.type(config.selectors.chatInputField, "Sorry, I don't have a microphone.");
               logStep('Successfully typed "Buenos Dias" in the chat input field');
               
               // Wait a moment after typing
@@ -208,3 +208,5 @@ automation.start().catch(error => {
   process.exit(1);
 });
 
+  //Utah South Area | The Eternal Family | 200 | Ferguson
+  //Utah South Area | The Divine Gift of Forgiveness | 290 | Dean

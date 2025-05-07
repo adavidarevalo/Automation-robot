@@ -102,6 +102,19 @@ class ZoomAutomation {
             await this.zoomFrame.waitForSelector(config.selectors.chatRecipientAppendix, { timeout: 5000 });
             await this.zoomFrame.click(config.selectors.chatRecipientAppendix);
             logStep('Successfully clicked chat recipient appendix');
+            
+            // Wait a moment for the recipient to be selected
+            await sleep(1000);
+            
+            // Type "Buenos Dias" in the chat input field
+            try {
+              await this.zoomFrame.waitForSelector(config.selectors.chatInputField, { timeout: 5000 });
+              await this.zoomFrame.click(config.selectors.chatInputField);
+              await this.zoomFrame.type(config.selectors.chatInputField, 'Buenos Dias');
+              logStep('Successfully typed "Buenos Dias" in the chat input field');
+            } catch (typeError) {
+              logStep(`Failed to type in chat input field: ${typeError.message}`);
+            }
           } catch (appendixError) {
             logStep(`Failed to click chat recipient appendix: ${appendixError.message}`);
           }
@@ -118,6 +131,19 @@ class ZoomAutomation {
               await this.zoomFrame.waitForSelector(config.selectors.chatRecipientAppendix, { timeout: 5000 });
               await this.zoomFrame.click(config.selectors.chatRecipientAppendix);
               logStep('Successfully clicked chat recipient appendix after text search');
+              
+              // Wait a moment for the recipient to be selected
+              await sleep(1000);
+              
+              // Type "Buenos Dias" in the chat input field
+              try {
+                await this.zoomFrame.waitForSelector(config.selectors.chatInputField, { timeout: 5000 });
+                await this.zoomFrame.click(config.selectors.chatInputField);
+                await this.zoomFrame.type(config.selectors.chatInputField, 'Buenos Dias');
+                logStep('Successfully typed "Buenos Dias" in the chat input field after text search');
+              } catch (typeError) {
+                logStep(`Failed to type in chat input field after text search: ${typeError.message}`);
+              }
             } catch (appendixError) {
               logStep(`Failed to click chat recipient appendix after text search: ${appendixError.message}`);
             }

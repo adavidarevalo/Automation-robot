@@ -34,6 +34,7 @@ const CONFIG = {
     chatButton: 'button.footer-button-base__button[aria-label="open the chat panel"]',
     chatRecipientDropdown: 'button.chat-receiver-list__receiver[aria-label*="Send chat to"]',
     chatRecipientAppendix: '.chat-receiver-list__appendix',
+    chatInputField: 'div.tiptap[contenteditable="true"][aria-placeholder="Type message here..."]',
   },
 };
 

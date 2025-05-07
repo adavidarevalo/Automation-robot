@@ -112,6 +112,18 @@ class ZoomAutomation {
               await this.zoomFrame.click(config.selectors.chatInputField);
               await this.zoomFrame.type(config.selectors.chatInputField, 'Buenos Dias');
               logStep('Successfully typed "Buenos Dias" in the chat input field');
+              
+              // Wait a moment after typing
+              await sleep(500);
+              
+              // Click the send button
+              try {
+                await this.zoomFrame.waitForSelector(config.selectors.chatSendButton, { timeout: 5000 });
+                await this.zoomFrame.click(config.selectors.chatSendButton);
+                logStep('Successfully clicked send button - message sent');
+              } catch (sendError) {
+                logStep(`Failed to click send button: ${sendError.message}`);
+              }
             } catch (typeError) {
               logStep(`Failed to type in chat input field: ${typeError.message}`);
             }
@@ -141,6 +153,18 @@ class ZoomAutomation {
                 await this.zoomFrame.click(config.selectors.chatInputField);
                 await this.zoomFrame.type(config.selectors.chatInputField, 'Buenos Dias');
                 logStep('Successfully typed "Buenos Dias" in the chat input field after text search');
+                
+                // Wait a moment after typing
+                await sleep(500);
+                
+                // Click the send button
+                try {
+                  await this.zoomFrame.waitForSelector(config.selectors.chatSendButton, { timeout: 5000 });
+                  await this.zoomFrame.click(config.selectors.chatSendButton);
+                  logStep('Successfully clicked send button after text search - message sent');
+                } catch (sendError) {
+                  logStep(`Failed to click send button after text search: ${sendError.message}`);
+                }
               } catch (typeError) {
                 logStep(`Failed to type in chat input field after text search: ${typeError.message}`);
               }

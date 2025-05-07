@@ -74,113 +74,122 @@ class ZoomAutomation {
     await waitAndClick(this.zoomFrame, config.selectors.joinButton);
   }
 
+  /**
+   * Sends a predefined message to everyone in the Zoom chat
+   * Uses robust element finding techniques to locate UI elements
+   */
   async sendAdminMessage() {
+    const MESSAGE = "Sorry, I don't have a microphone.";
+    const TIMEOUT = 5000;
+    
     logStep('Opening chat panel...');
     try {
       // Wait for Zoom UI to fully load
       await sleep(config.timeouts.preparation);
-      logStep('Extracting HTML for debugging...');          
-      try {
-        // First click the Chat button to open the chat panel
-        await findAndClickElementWithText(this.zoomFrame, 'button', 'Chat', 5000);
-        logStep('Found and clicked chat button using text search strategy');
-        
-        // Wait a moment for the chat panel to fully load
-        await sleep(2000);
-        
-        // Now click the chat recipient dropdown button
-        try {
-          await this.zoomFrame.waitForSelector(config.selectors.chatRecipientDropdown, { timeout: 5000 });
-          await this.zoomFrame.click(config.selectors.chatRecipientDropdown);
-          logStep('Successfully clicked chat recipient dropdown');
-          
-          // Wait a moment for the dropdown to fully appear
-          await sleep(1000);
-          
-          // Now click the chat-receiver-list__appendix element
-          try {
-            await this.zoomFrame.waitForSelector(config.selectors.chatRecipientAppendix, { timeout: 5000 });
-            await this.zoomFrame.click(config.selectors.chatRecipientAppendix);
-            logStep('Successfully clicked chat recipient appendix');
-            
-            // Wait a moment for the recipient to be selected
-            await sleep(1000);
-            
-            // Type "Buenos Dias" in the chat input field
-            try {
-              await this.zoomFrame.waitForSelector(config.selectors.chatInputField, { timeout: 5000 });
-              await this.zoomFrame.click(config.selectors.chatInputField);
-              await this.zoomFrame.type(config.selectors.chatInputField, "Sorry, I don't have a microphone.");
-              logStep('Successfully typed "Buenos Dias" in the chat input field');
-              
-              // Wait a moment after typing
-              await sleep(500);
-              
-              // Click the send button
-              try {
-                await this.zoomFrame.waitForSelector(config.selectors.chatSendButton, { timeout: 5000 });
-                await this.zoomFrame.click(config.selectors.chatSendButton);
-                logStep('Successfully clicked send button - message sent');
-              } catch (sendError) {
-                logStep(`Failed to click send button: ${sendError.message}`);
-              }
-            } catch (typeError) {
-              logStep(`Failed to type in chat input field: ${typeError.message}`);
-            }
-          } catch (appendixError) {
-            logStep(`Failed to click chat recipient appendix: ${appendixError.message}`);
-          }
-        } catch (error) {
-          // If selector doesn't work, try findAndClickElementWithText as a fallback
-          logStep(`Could not click recipient dropdown with selector: ${error.message}`);
-          try {
-            await findAndClickElementWithText(this.zoomFrame, 'button', 'Everyone', 5000);
-            logStep('Found and clicked recipient dropdown using text search');
-            
-            // Try to click the appendix after using the text search method
-            await sleep(1000);
-            try {
-              await this.zoomFrame.waitForSelector(config.selectors.chatRecipientAppendix, { timeout: 5000 });
-              await this.zoomFrame.click(config.selectors.chatRecipientAppendix);
-              logStep('Successfully clicked chat recipient appendix after text search');
-              
-              // Wait a moment for the recipient to be selected
-              await sleep(1000);
-              
-              // Type "Buenos Dias" in the chat input field
-              try {
-                await this.zoomFrame.waitForSelector(config.selectors.chatInputField, { timeout: 5000 });
-                await this.zoomFrame.click(config.selectors.chatInputField);
-                await this.zoomFrame.type(config.selectors.chatInputField, 'Buenos Dias');
-                logStep('Successfully typed "Buenos Dias" in the chat input field after text search');
-                
-                // Wait a moment after typing
-                await sleep(500);
-                
-                // Click the send button
-                try {
-                  await this.zoomFrame.waitForSelector(config.selectors.chatSendButton, { timeout: 5000 });
-                  await this.zoomFrame.click(config.selectors.chatSendButton);
-                  logStep('Successfully clicked send button after text search - message sent');
-                } catch (sendError) {
-                  logStep(`Failed to click send button after text search: ${sendError.message}`);
-                }
-              } catch (typeError) {
-                logStep(`Failed to type in chat input field after text search: ${typeError.message}`);
-              }
-            } catch (appendixError) {
-              logStep(`Failed to click chat recipient appendix after text search: ${appendixError.message}`);
-            }
-          } catch (secondError) {
-            logStep(`Failed to click recipient dropdown: ${secondError.message}`);
-          }
-        }
-      } catch (error) {
-        logStep(`Failed to click chat button: ${error.message}`);
-      }
+      await sleep(config.timeouts.preparation);
+      await sleep(config.timeouts.preparation);
+      
+      // Step 1: Open the chat panel by clicking the Chat button
+      await this._clickChatButton();
+      await sleep(2000); // Wait for chat panel to load
+      
+      // Step 2: Select message recipients (Everyone)
+      await this._selectChatRecipient();
+      await sleep(1000); // Wait for recipient selection
+      
+      // Step 3: Type and send the message
+      await this._typeAndSendChatMessage(MESSAGE);
+      
+      logStep('Admin message sent successfully');
     } catch (error) {
-      logStep(`Error opening chat panel: ${error.message}`);
+      logStep(`Error sending admin message: ${error.message}`);
       // Continue execution even if sending message fails
+    }
+  }
+  
+  /**
+   * Clicks the chat button to open the chat panel
+   * @private
+   */
+  async _clickChatButton() {
+    try {
+      // Try to find and click using text search first (most robust)
+      await findAndClickElementWithText(this.zoomFrame, 'button', 'Chat', 5000);
+      logStep('Found and clicked chat button using text search');
+      return true;
+    } catch (error) {
+      // Fallback to selector
+      try {
+        await this.zoomFrame.waitForSelector(config.selectors.chatButton, { timeout: 5000 });
+        await this.zoomFrame.click(config.selectors.chatButton);
+        logStep('Found and clicked chat button using selector');
+        return true;
+      } catch (selectorError) {
+        logStep(`Failed to click chat button: ${error.message}`);
+        throw new Error('Could not open chat panel');
+      }
+    }
+  }
+  
+  /**
+   * Selects the recipient for the chat message
+   * @private
+   */
+  async _selectChatRecipient() {
+    try {
+      // Try first approach - using selectors
+      await this.zoomFrame.waitForSelector(config.selectors.chatRecipientDropdown, { timeout: 5000 });
+      await this.zoomFrame.click(config.selectors.chatRecipientDropdown);
+      logStep('Clicked chat recipient dropdown using selector');
+      
+      await sleep(1000);
+      
+      await this.zoomFrame.waitForSelector(config.selectors.chatRecipientAppendix, { timeout: 5000 });
+      await this.zoomFrame.click(config.selectors.chatRecipientAppendix);
+      logStep('Clicked chat recipient appendix using selector');
+      return true;
+    } catch (error) {
+      // Fallback approach - using text search
+      try {
+        await findAndClickElementWithText(this.zoomFrame, 'button', 'Everyone', 5000);
+        logStep('Selected recipient using text search');
+        
+        await sleep(1000);
+        
+        await this.zoomFrame.waitForSelector(config.selectors.chatRecipientAppendix, { timeout: 5000 });
+        await this.zoomFrame.click(config.selectors.chatRecipientAppendix);
+        logStep('Clicked chat recipient appendix after text search');
+        return true;
+      } catch (textSearchError) {
+        logStep(`Failed to select chat recipient: ${error.message}`);
+        throw new Error('Could not select chat recipient');
+      }
+    }
+  }
+  
+  /**
+   * Types and sends a message in the chat
+   * @param {string} message - The message to send
+   * @private
+   */
+  async _typeAndSendChatMessage(message) {
+    try {
+      // Type the message
+      await this.zoomFrame.waitForSelector(config.selectors.chatInputField, { timeout: 5000 });
+      await this.zoomFrame.click(config.selectors.chatInputField);
+      await this.zoomFrame.type(config.selectors.chatInputField, message);
+      logStep(`Successfully typed message in chat field`);
+      
+      await sleep(500);
+      
+      // Send the message
+      await this.zoomFrame.waitForSelector(config.selectors.chatSendButton, { timeout: 5000 });
+      await this.zoomFrame.click(config.selectors.chatSendButton);
+      logStep('Successfully clicked send button - message sent');
+      return true;
+    } catch (error) {
+      logStep(`Failed to type or send message: ${error.message}`);
+      throw new Error('Could not send chat message');
     }
   }
 

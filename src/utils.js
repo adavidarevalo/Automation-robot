@@ -70,9 +70,69 @@ function findNearestMeeting() {
   }
 }
 
+/**
+ * Encuentra y hace clic en un elemento que contiene un texto específico
+ * @param {Page|Frame} context - Page o Frame de Puppeteer donde buscar
+ * @param {string} selector - Selector base para buscar elementos
+ * @param {string} text - Texto a buscar dentro de los elementos
+ * @param {number} timeout - Tiempo máximo de espera en ms
+ */
+async function findAndClickElementWithText(context, selector, text, timeout = 15000) {
+  logStep(`Buscando elemento '${selector}' que contenga texto '${text}'`);
+  
+  const startTime = Date.now();
+  let found = false;
+  
+  while (Date.now() - startTime < timeout && !found) {
+    try {
+      // Evaluar dentro del contexto para encontrar elementos que coincidan
+      found = await context.evaluate((sel, txt) => {
+        const elements = Array.from(document.querySelectorAll(sel));
+        const targetElement = elements.find(el => {
+          // Buscar en el texto del elemento
+          if (el.textContent.toLowerCase().includes(txt.toLowerCase())) {
+            return true;
+          }
+          
+          // Buscar en los hijos span
+          const spans = Array.from(el.querySelectorAll('span'));
+          return spans.some(span => 
+            span.textContent.toLowerCase().includes(txt.toLowerCase())
+          );
+        });
+        
+        if (targetElement) {
+          targetElement.click();
+          return true;
+        }
+        return false;
+      }, selector, text);
+      
+      if (found) {
+        logStep(`Elemento con texto '${text}' encontrado y clicado exitosamente`);
+        return true;
+      }
+      
+      // Esperar un poco antes de intentar de nuevo
+      await sleep(500);
+    } catch (error) {
+      // Continuar intentando si hay un error
+      await sleep(500);
+    }
+  }
+  
+  if (!found) {
+    logStep(`No se pudo encontrar el elemento con texto '${text}' después de ${timeout}ms`);
+    throw new Error(`No se pudo encontrar el elemento con texto: ${text}`);
+  }
+  
+  return found;
+}
+
 module.exports = {
+  findNearestMeeting,
   waitAndClick,
   sleep,
   logStep,
-  findNearestMeeting,
+  findAndClickElementWithText,
 };

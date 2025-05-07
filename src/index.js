@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const URL = require('url').URL;
 const config = require('./config');
 const { waitAndClick, sleep, logStep } = require('./utils');
+      const { findAndClickElementWithText } = require('./utils');
 
 class ZoomAutomation {
   constructor() {
@@ -76,15 +77,15 @@ class ZoomAutomation {
   async sendAdminMessage() {
     logStep('Opening chat panel...');
     try {
-      // Wait for chat button to be available
+      // Wait for Zoom UI to fully load
       await sleep(config.timeouts.preparation);
-      await sleep(config.timeouts.preparation);
-      logStep('XXX');
-
-      // Click on the chat button to open the chat panel
-      await this.page.waitForSelector(config.selectors.chatButton);
-      await this.page.click(config.selectors.chatButton);
-      logStep('Chat panel opened');
+      logStep('Extracting HTML for debugging...');          
+      try {
+        await findAndClickElementWithText(this.zoomFrame, 'button', 'Chat', 5000);
+        logStep('Found and clicked chat button using text search strategy');
+      } catch (error) {
+        logStep(`Strategy 2 failed: ${error.message}`);
+      }
     } catch (error) {
       logStep(`Error opening chat panel: ${error.message}`);
       // Continue execution even if sending message fails

@@ -76,26 +76,21 @@ class ZoomAutomation {
    */
   async sendAdminMessage() {
     const MESSAGE = "Sorry, I don't have a microphone.";
-    const TIMEOUT = 5000;
-    
-    logStep('Opening chat panel...');
+
+    logStep("Opening chat panel...");
     try {
-      // Wait for Zoom UI to fully load
-      // Usar el nuevo timeout específico para la preparación del chat
       await sleep(config.timeouts.chatPreparation);
-      
-      // Step 1: Open the chat panel by clicking the Chat button
+      await sleep(config.timeouts.chatPreparation);
+
       await this._clickChatButton();
       await sleep(2000); // Wait for chat panel to load
-      
-      // Step 2: Select message recipients (Everyone)
+
       await this._selectChatRecipient();
       await sleep(1000); // Wait for recipient selection
-      
-      // Step 3: Type and send the message
+
       await this._typeAndSendChatMessage(MESSAGE);
-      
-      logStep('Admin message sent successfully');
+
+      logStep("Admin message sent successfully");
     } catch (error) {
       logStep(`Error sending admin message: ${error.message}`);
       // Continue execution even if sending message fails

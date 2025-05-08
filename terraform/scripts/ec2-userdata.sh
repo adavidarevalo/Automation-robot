@@ -1,7 +1,19 @@
 #!/bin/bash
 # EC2 Ubuntu userdata script for Automation-robot
 # This script runs on instance first boot
+
+# Set up logging
+LOG_FILE="/var/log/automation-robot.log"
+touch $LOG_FILE
+chmod 666 $LOG_FILE
+
+# Function to log messages
+log_message() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a $LOG_FILE
+}
+
 sudo su
+log_message "Starting system update"
 apt update
 apt upgrade -y
 apt install -y git 
@@ -26,8 +38,9 @@ nohup ffmpeg -re -stream_loop -1 -i "./public/video.mp4" \
 
 # Esperar un momento para asegurarse de que ffmpeg inició correctamente
 sleep 4
-echo "Webcam virtual con video en loop iniciada en segundo plano"
+log_message "Webcam virtual con video en loop iniciada en segundo plano"
 
+log_message "Installing Node.js and npm"
 sudo apt install -y nodejs npm 
 sudo npm i
 sudo npx puppeteer browsers install chrome -y
@@ -36,19 +49,19 @@ MAX_RETRIES=3
 RETRY_COUNT=0
 SUCCESS=false
 
-echo "Attempting to start the application (attempt 1 of $MAX_RETRIES)"
+log_message "Attempting to start the application (attempt 1 of $MAX_RETRIES)"
 while [ $RETRY_COUNT -lt $MAX_RETRIES ] && [ $SUCCESS = false ]; do
-  sudo npm run start
+  sudo npm run start >> $LOG_FILE 2>&1
   if [ $? -eq 0 ]; then
-    echo "Application started successfully"
+    log_message "Application started successfully"
     SUCCESS=true
   else
     RETRY_COUNT=$((RETRY_COUNT+1))
     if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-      echo "Start failed. Retrying (attempt $((RETRY_COUNT+1)) of $MAX_RETRIES)..."
+      log_message "Start failed. Retrying (attempt $((RETRY_COUNT+1)) of $MAX_RETRIES)..."
       sleep 5
     else
-      echo "Failed to start application after $MAX_RETRIES attempts"
+      log_message "Failed to start application after $MAX_RETRIES attempts"
     fi
   fi
 done

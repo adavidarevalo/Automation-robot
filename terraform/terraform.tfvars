@@ -11,8 +11,7 @@ schedule_array = [
     ["thursday", "00:00"],
     ["thursday", "00:10"],
     ["thursday", "02:15"],
-    ["thursday", "02:25"],
-    ["thursday", "17:50"]
+    ["thursday", "02:25"]
 ]
 
 # Default tags to apply to all resources

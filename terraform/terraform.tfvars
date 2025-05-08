@@ -6,9 +6,13 @@ timezone = "America/Denver"  # Mountain Time Zone
 
 # Schedule array with days and times to run the automation
 schedule_array = [
-  ["Thursday", "20:15"],  # 8:15 PM
-  ["Wednesday", "20:10"], # 8:10 PM
-  ["Wednesday", "10:20"]  # 10:20 AM
+    ["wednesday", "16:15"],
+    ["wednesday", "02:15"],
+    ["thursday", "00:00"],
+    ["thursday", "00:10"],
+    ["thursday", "02:15"],
+    ["thursday", "02:25"],
+    ["thursday", "17:50"]
 ]
 
 # Default tags to apply to all resources

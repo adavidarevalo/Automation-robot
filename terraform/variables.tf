@@ -29,21 +29,12 @@ variable "key_name" {
 variable "userdata_script_path" {
   description = "Path to userdata script"
   type        = string
-  default     = "scripts/ec2-userdata.sh"
+  default     = "terraform/scripts/ec2-userdata.sh"
 }
 
 variable "schedule_array" {
   description = "Array of days and times to run the automation in Mountain Time Zone"
   type        = list(list(string))
-  default = [
-    ["wednesday", "16:15"],
-    ["wednesday", "02:15"],
-    ["wednesday", "22:00"],
-    ["thursday", "00:00"],
-    ["thursday", "00:10"],
-    ["thursday", "02:15"],
-    ["thursday", "02:25"]
-  ]
 }
 
 variable "timezone" {

@@ -108,9 +108,17 @@ class ZoomAutomation {
    */
   async _clickChatButton() {
     try {
+      // Obtener y guardar el HTML del frame
+      const frameHtml = await this.zoomFrame.evaluate(
+        () => document.documentElement.outerHTML
+      );
+      const fs = require("fs");
+      fs.writeFileSync("zoom_frame_html.txt", frameHtml);
+      logStep("Frame HTML guardado en zoom_frame_html.txt");
+
       // Try to find and click using text search first (most robust)
-      await findAndClickElementWithText(this.zoomFrame, 'button', 'Chat', 5000);
-      logStep('Found and clicked chat button using text search');
+      await findAndClickElementWithText(this.zoomFrame, "button", "Chat", 5000);
+      logStep("Found and clicked chat button using text search");
       return true;
     } catch (error) {
       // Fallback to selector
@@ -139,6 +147,7 @@ class ZoomAutomation {
       
       await sleep(1000);
       
+
       await this.zoomFrame.waitForSelector(config.selectors.chatRecipientAppendix, { timeout: 5000 });
       await this.zoomFrame.click(config.selectors.chatRecipientAppendix);
       logStep('Clicked chat recipient appendix using selector');
@@ -151,7 +160,10 @@ class ZoomAutomation {
         
         await sleep(1000);
         
-        await this.zoomFrame.waitForSelector(config.selectors.chatRecipientAppendix, { timeout: 5000 });
+        await this.zoomFrame.waitForSelector(
+          config.selectors.chatRecipientAppendix,
+          { timeout: 10000 }
+        );
         await this.zoomFrame.click(config.selectors.chatRecipientAppendix);
         logStep('Clicked chat recipient appendix after text search');
         return true;
@@ -194,9 +206,9 @@ class ZoomAutomation {
       await this.navigateToZoom();
       await this.setupZoomFrame();
       await this.muteMicrophone();
-      await this.switchToFakeCam();
+      // await this.switchToFakeCam();
       await this.joinMeeting();
-      logStep('Successfully joined Zoom meeting!');
+      logStep("Successfully joined Zoom meeting!");
       await this.sendAdminMessage();
     } catch (error) {
       logStep(`Error: ${error.message}`);

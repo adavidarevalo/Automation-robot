@@ -29,13 +29,22 @@ function findNearestMeeting() {
   let closestMeeting = null;
   let smallestDifference = Infinity;
 
+  console.log('Current time:', now.format('HH:mm'));
+  console.log('Current day:', currentDay);
+
   for (const meeting of meetings) {
     if (meeting.day === currentDay) {
       // Parse meeting time with moment using 24h format
-      const meetingTime = moment(meeting.time, 'HH:mm').tz('America/Denver');
-      
-      // Set meeting time to today
-      meetingTime.year(now.year()).month(now.month()).date(now.date());
+      const [hours, minutes] = meeting.time.split(':');
+      const meetingTime = moment().tz('America/Denver')
+        .hours(parseInt(hours, 10))
+        .minutes(parseInt(minutes, 10))
+        .seconds(0)
+        .milliseconds(0);
+
+      console.log(`Checking meeting: ${meeting.title}`);
+      console.log(`Meeting time: ${meeting.time} -> ${meetingTime.format('HH:mm')}`);
+
       
       // Check if meeting is within our window
       if (meetingTime.isBetween(windowStart, windowEnd, null, '[]')) {

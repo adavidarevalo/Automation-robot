@@ -76,24 +76,44 @@ class ZoomAutomation {
    */
   async sendAdminMessage() {
     const MESSAGE = "Sorry, I don't have a microphone.";
-
     logStep("Opening chat panel...");
+
     try {
       await sleep(config.timeouts.chatPreparation);
       await sleep(config.timeouts.chatPreparation);
+    } catch (error) {
+      logStep(`Error during initial delay: ${error.message}`);
+    }
 
+    try {
       await this._clickChatButton();
+    } catch (error) {
+      logStep(`Error clicking chat button: ${error.message}`);
+    }
+
+    try {
       await sleep(2000); // Wait for chat panel to load
+    } catch (error) {
+      logStep(`Error during chat panel load delay: ${error.message}`);
+    }
 
+    try {
       await this._selectChatRecipient();
+    } catch (error) {
+      logStep(`Error selecting chat recipient: ${error.message}`);
+    }
+
+    try {
       await sleep(1000); // Wait for recipient selection
+    } catch (error) {
+      logStep(`Error during recipient selection delay: ${error.message}`);
+    }
 
+    try {
       await this._typeAndSendChatMessage(MESSAGE);
-
       logStep("Admin message sent successfully");
     } catch (error) {
-      logStep(`Error sending admin message: ${error.message}`);
-      // Continue execution even if sending message fails
+      logStep(`Error sending chat message: ${error.message}`);
     }
   }
   
@@ -201,7 +221,7 @@ class ZoomAutomation {
       await this.navigateToZoom();
       await this.setupZoomFrame();
       await this.muteMicrophone();
-      // await this.switchToFakeCam();
+      await this.switchToFakeCam();
       await this.joinMeeting();
       logStep("Successfully joined Zoom meeting!");
       await this.sendAdminMessage();

@@ -240,4 +240,3 @@ automation.start().catch(error => {
 });
 
   //Utah South Area | The Eternal Family | 200 | Ferguson
-  //Utah South Area | The Divine Gift of Forgiveness | 290 | Dean

@@ -21,9 +21,9 @@ function findNearestMeeting() {
   const now = moment().tz('America/Denver');
   const currentDay = now.format('dddd').toLowerCase();
     
-  // Define window: 20 minutes before and 20 minutes after
-  const windowStart = moment(now).subtract(20, 'minutes');
-  const windowEnd = moment(now).add(20, 'minutes');
+  // Define window: 5 minutes before and 5 minutes after (reduced from 20 minutes)
+  const windowStart = moment(now).subtract(5, 'minutes');
+  const windowEnd = moment(now).add(5, 'minutes');
   
   // Find the closest meeting within the time window
   let closestMeeting = null;

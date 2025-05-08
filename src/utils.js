@@ -31,8 +31,8 @@ function findNearestMeeting() {
 
   for (const meeting of meetings) {
     if (meeting.day === currentDay) {
-      // Parse meeting time with moment
-      const meetingTime = moment(meeting.time, 'h:mm A').tz('America/Denver');
+      // Parse meeting time with moment using 24h format
+      const meetingTime = moment(meeting.time, 'HH:mm').tz('America/Denver');
       
       // Set meeting time to today
       meetingTime.year(now.year()).month(now.month()).date(now.date());

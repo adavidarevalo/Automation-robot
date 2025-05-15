@@ -17,8 +17,8 @@ function logStep(message) {
 }
 
 function findNearestMeeting() {
-  // Get current time in Denver timezone (America/Denver)
-  const now = moment().tz('America/Denver');
+  // Get current time in UTC
+  const now = moment().utc();
   const currentDay = now.format('dddd').toLowerCase();
     
   // Define window: 5 minutes before and 5 minutes after (reduced from 20 minutes)
@@ -29,14 +29,14 @@ function findNearestMeeting() {
   let closestMeeting = null;
   let smallestDifference = Infinity;
 
-  console.log('Current time:', now.format('HH:mm'));
-  console.log('Current day:', currentDay);
+  console.log('Current time (UTC):', now.format('HH:mm'));
+  console.log('Current day (UTC):', currentDay);
 
   for (const meeting of meetings) {
     if (meeting.day === currentDay) {
       // Parse meeting time with moment using 24h format
       const [hours, minutes] = meeting.time.split(':');
-      const meetingTime = moment().tz('America/Denver')
+      const meetingTime = moment().utc()
         .hours(parseInt(hours, 10))
         .minutes(parseInt(minutes, 10))
         .seconds(0)

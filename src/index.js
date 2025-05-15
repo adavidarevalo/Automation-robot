@@ -221,7 +221,7 @@ class ZoomAutomation {
       await this.navigateToZoom();
       await this.setupZoomFrame();
       await this.muteMicrophone();
-      await this.switchToFakeCam();
+      // await this.switchToFakeCam();
       await this.joinMeeting();
       logStep("Successfully joined Zoom meeting!");
       await this.sendAdminMessage();

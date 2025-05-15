@@ -6,14 +6,14 @@ timezone = "America/Denver"  # Mountain Time Zone
 
 # Schedule array with days and times to run the automation
 schedule_array = [
-    ["wednesday", "16:15"],  # 10:15 MT -> 16:15 UTC
-    ["thursday", "02:15"],  # 20:15 MT -> 02:15 UTC (Wednesday MT)
-    ["thursday", "16:50"],  # 10:40 MT -> 16:40 UTC
-    ["friday", "00:00"],   # 18:00 MT -> 00:00 UTC (Thursday MT)
-    ["friday", "00:10"],   # 18:10 MT -> 00:10 UTC (Thursday MT)
-    ["friday", "02:00"],   # 20:00 MT -> 02:00 UTC (Thursday MT)
-    ["friday", "02:15"],   # 20:15 MT -> 02:15 UTC (Thursday MT)
-    ["friday", "02:30"]    # 20:30 MT -> 02:30 UTC (Thursday MT)
+    ["wednesday", "16:10"],  # 16:15 - 5min = 16:10 UTC
+    ["thursday", "02:10"],  # 02:15 - 5min = 02:10 UTC
+    ["thursday", "17:20"],  # 17:15 - 5min = 17:10 UTC
+    ["thursday", "23:55"],  # 00:00 - 5min = 23:55 UTC (day changes)
+    ["friday", "00:05"],   # 00:10 - 5min = 00:05 UTC
+    ["friday", "01:55"],   # 02:00 - 5min = 01:55 UTC
+    ["friday", "02:10"],   # 02:15 - 5min = 02:10 UTC
+    ["friday", "02:25"]    # 02:30 - 5min = 02:25 UTC
 ]
 
 # Default tags to apply to all resources

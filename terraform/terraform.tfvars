@@ -8,7 +8,6 @@ timezone = "America/Denver"  # Mountain Time Zone
 schedule_array = [
     ["wednesday", "16:10"],  # 16:15 - 5min = 16:10 UTC
     ["thursday", "02:10"],  # 02:15 - 5min = 02:10 UTC
-    ["thursday", "17:20"],  # 17:15 - 5min = 17:10 UTC
     ["thursday", "23:55"],  # 00:00 - 5min = 23:55 UTC (day changes)
     ["friday", "00:05"],   # 00:10 - 5min = 00:05 UTC
     ["friday", "01:55"],   # 02:00 - 5min = 01:55 UTC
